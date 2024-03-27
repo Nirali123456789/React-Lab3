@@ -51,7 +51,7 @@ AppHeader.defaultProps = {
 const styles = StyleSheet.create({
   mainView: {
     height: Responsive.verticalScale(50),
-    backgroundColor: Color.themeBlue,
+    backgroundColor: Color.primary,
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   titleText: {
     fontWeight: "700",
     fontSize: Responsive.font(6),
-    color: Color.themeOrange,
+    color: Color.secondary,
     flex: 1,
     textAlign: "center",
   },

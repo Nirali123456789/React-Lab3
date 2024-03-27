@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { InfoScreen, TransactionDetailScreen, TransactionListScreen,} from "../screens";
+import { InfoScreen, TDetailScreen, TListScreen,} from "../screens";
 import { Screen } from "../utils";
 import { AppTabBar } from "../components";
 
@@ -15,11 +15,11 @@ const TransactionStack = () => {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen
         name={Screen.ListScreen}
-        component={TransactionListScreen}
+        component={TListScreen}
       />
       <Stack.Screen
         name={Screen.DetailScreen}
-        component={TransactionDetailScreen}
+        component={TDetailScreen}
       />
     </Stack.Navigator>
   );

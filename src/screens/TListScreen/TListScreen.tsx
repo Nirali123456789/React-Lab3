@@ -12,11 +12,11 @@ import { tList } from "../../utils/Data";
 import { Color, Images, Responsive, Screen } from "../../utils";
 import { AppHeader } from "../../components";
 
-interface TransactionListScreenProps {
+interface TListScreenProps {
   navigation: any;
 }
 
-const TransactionListScreen: React.FC<TransactionListScreenProps> = (props) => {
+const TListScreen: React.FC<TListScreenProps> = (props) => {
   const onPressItem = (item: any) => {
     const { navigation } = props;
     navigation.navigate(Screen.DetailScreen, { item });
@@ -53,7 +53,7 @@ const TransactionListScreen: React.FC<TransactionListScreenProps> = (props) => {
   );
 };
 
-export default TransactionListScreen;
+export default TListScreen;
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   rightImg: {
-    height: Responsive.verticalScale(15),
-    width: Responsive.scale(10),
+    height: Responsive.verticalScale(25),
+    width: Responsive.scale(25),
     tintColor: Color.white,
     marginLeft: Responsive.scale(5),
   },

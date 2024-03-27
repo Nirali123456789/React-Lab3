@@ -1,4 +1,4 @@
-package com.selffinance
+package com.nirali.selffinance
 
 import android.app.Application
 import com.facebook.react.PackageList

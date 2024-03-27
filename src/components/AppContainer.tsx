@@ -39,9 +39,9 @@ const styles = StyleSheet.create({
     backgroundColor: Color.white,
   },
   topSafeArea: {
-    backgroundColor: Color.themeBlue,
+    backgroundColor: Color.primary,
   },
   bottomSafeArea: {
-    backgroundColor: Color.themeBlue,
+    backgroundColor: Color.primary,
   },
 });

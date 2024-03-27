@@ -1,4 +1,4 @@
-package com.selffinance
+package com.nirali.selffinance
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate

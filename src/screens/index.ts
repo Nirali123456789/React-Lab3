@@ -1,5 +1,5 @@
 import InfoScreen from "./InfoScreen/InScreen";
-import TransactionDetailScreen from "./TransactionDetailScreen/TDetailScreen";
-import TransactionListScreen from "./TransactionListScreen/TransactionListScreen";
+import TDetailScreen from "./TDetailScreen/TDetailScreen";
+import TListScreen from "./TListScreen/TListScreen";
 
-export { InfoScreen, TransactionDetailScreen, TransactionListScreen };
+export { InfoScreen, TDetailScreen, TListScreen };
