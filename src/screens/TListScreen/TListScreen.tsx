@@ -6,36 +6,74 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import { getDatabase, ref, onValue, off } from 'firebase/database';
+import React, { useEffect, useState } from "react";
 import { AppContainer } from "../../components";
-import { tList } from "../../utils/Data";
 import { Color, Images, Responsive, Screen } from "../../utils";
 import { AppHeader } from "../../components";
 
 interface TListScreenProps {
   navigation: any;
 }
+interface Transaction {
+  title: string;
+  location: string;
+  date: string;
+  amount: string;
+}
 
 const TListScreen: React.FC<TListScreenProps> = (props) => {
-  const onPressItem = (item: any) => {
+
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+
+  useEffect(() => {
+    const db = getDatabase();
+    const dbRef = ref(db, '/Mytransactions');
+
+    const unsubscribe = onValue(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const transactionsData: Transaction[] = Object.values(data);
+        setTransactions(transactionsData);
+      }
+    });
+
+    return () => off(dbRef, 'value', unsubscribe);
+  }, []);
+
+  const onPressItem = (item: any, transactionKey: Number) => {
     const { navigation } = props;
-    navigation.navigate(Screen.DetailScreen, { item });
+    navigation.navigate(Screen.DetailScreen, { item, transactionKey });
   };
+
+  const handleAddPress = () => {
+    const { navigation } = props;
+    navigation.navigate(Screen.AddScreen);
+  };
+
   return (
     <AppContainer>
-      <AppHeader />
+      <AppHeader
+        isAddButton
+        onPressAdd={handleAddPress}  >
+
+      </AppHeader>
       <View style={styles.mainContainer}>
+
         <FlatList
-          data={tList}
-          renderItem={({ item }) => {
+          data={transactions}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item, index }) => {
             return (
               <View style={styles.itemView}>
                 <View style={styles.itemLeftView}>
                   <Text style={styles.titleText}>{item?.title}</Text>
+
                 </View>
                 <TouchableOpacity
                   style={styles.itemRightTouch}
-                  onPress={() => onPressItem(item)}
+                  onPress={() => onPressItem(item, index)}
                 >
                   <Text style={styles.amountText}>{`$${item?.amount}`}</Text>
                   <Image

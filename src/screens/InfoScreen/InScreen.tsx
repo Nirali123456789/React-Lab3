@@ -1,11 +1,32 @@
 import { StyleSheet, Text, View } from "react-native";
 import _ from "lodash";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AppContainer, AppHeader } from "../../components";
 import { Color, Responsive } from "../../utils";
-import { tList } from "../../utils/Data";
+import { getDatabase, ref, onValue ,off} from 'firebase/database';
 
-const InScreen = () => {
+const InfoScreen = () => {
+  const [transactions, setTransactions] = useState<any[]>([]);
+
+
+  useEffect(() => {
+    const db = getDatabase();
+    const dbRef = ref(db, '/Mytransactions');
+
+    onValue(dbRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const transactionsData = Object.values(data);
+        setTransactions(transactionsData);
+      }
+    });
+
+
+    return () => {
+      off(dbRef);
+    };
+  }, []);
+  
   const renderItem = (title: string, answer: string) => {
     return (
       <View style={styles.smallItemView}>
@@ -29,14 +50,14 @@ const InScreen = () => {
     );
   };
 
-  const balance = _.sumBy(tList, (item) => Number(item?.amount));
-  const high = _.maxBy(tList, (item) => Number(item?.amount));
-  const low = _.minBy(tList, (item) => Number(item?.amount));
+  const balance = transactions.reduce((total, item) => total + parseFloat(item.amount), 0);
+  const high = transactions.reduce((prev, current) => parseFloat(prev.amount) > parseFloat(current.amount) ? prev : current, {});
+  const low = transactions.reduce((prev, current) => parseFloat(prev.amount) < parseFloat(current.amount) ? prev : current, {});
   return (
     <AppContainer>
       <AppHeader titleText={"Summary"} />
       <View style={styles.mainContainer}>
-        {renderItem("Transactions", tList?.length.toString())}
+        {renderItem("Transactions", transactions?.length.toString())}
         {renderItem("Balance", `$${balance}`)}
         {renderBigItem("High Spending", high)}
         {renderBigItem("Low Spending", low)}
@@ -45,7 +66,7 @@ const InScreen = () => {
   );
 };
 
-export default InScreen;
+export default InfoScreen;
 
 const styles = StyleSheet.create({
   mainContainer: {

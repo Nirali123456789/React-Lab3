@@ -1,22 +1,35 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { AppContainer, AppHeader } from '../../components';
+import { Color, Responsive, Images } from '../../utils';
+import { getDatabase, ref, onValue, off } from 'firebase/database';
 
-import { AppContainer, AppHeader } from "../../components";
-import { Color, Responsive } from "../../utils";
 
-interface TDetailScreenProps {
-  navigation: any;
-  route: any;
-}
+const TDetailScreen: React.FC<any> = ({ route, navigation }) => {
+  const [transaction, setTransaction] = useState<any>(null);
 
-const TDetailScreen: React.FC<TDetailScreenProps> = (
-  props
-) => {
-  const { navigation, route } = props;
-  const { item } = route?.params;
+
   const onPressBack = () => {
     navigation.goBack();
   };
+
+  useEffect(() => {
+    const db = getDatabase();
+    const transactionKey = route.params.transactionKey;
+    const transactionRef = ref(db, `Mytransactions/${transactionKey}`);
+    console.log("Key ", transactionKey)
+    const onDataChange = (snapshot: any) => {
+      const data = snapshot.val();
+      setTransaction(data);
+    };
+
+    onValue(transactionRef, onDataChange);
+
+    return () => {
+      off(transactionRef, 'value', onDataChange);
+    };
+  }, [route.params.transactionKey]);
+
   return (
     <AppContainer>
       <AppHeader
@@ -24,54 +37,40 @@ const TDetailScreen: React.FC<TDetailScreenProps> = (
         isBackButton
         onPressBack={onPressBack}
       />
-      <View style={styles.mainContainer}>
-        <View style={styles.topView}>
-          <Text style={styles.amountText}>{`$${item?.amount}`}</Text>
-          <Text style={styles.otherText}>{item?.title}</Text>
-          <Text style={styles.otherText}>{item?.location}</Text>
-        </View>
-        <View style={styles.bottomView}>
-          <Text style={styles.otherText}>{"Transaction Date"}</Text>
-          <Text style={styles.dateText}>{item?.date}</Text>
-        </View>
+      <View style={styles.container}>
+        {transaction && (
+          <>
+            <Text style={styles.text}>Title: {transaction.title}</Text>
+            <Text style={styles.text}>Location: {transaction.location}</Text>
+            <Text style={styles.text}>Date: {transaction.date}</Text>
+            <Text style={styles.text}>Amount: ${transaction.amount}</Text>
+          </>
+        )}
       </View>
     </AppContainer>
   );
 };
 
-export default TDetailScreen;
-
 const styles = StyleSheet.create({
-  mainContainer: {
+  container: {
     flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: Color.white,
   },
-  topView: {
-    backgroundColor: Color.secondary,
-    height: Responsive.verticalScale(100),
-    width: "100%",
-    alignItems: "center",
-    paddingVertical: Responsive.verticalScale(20),
-  },
-  amountText: {
-    fontWeight: "600",
-    fontSize: Responsive.font(5.5),
-    color: Color.black,
-    marginBottom: Responsive.verticalScale(4),
-  },
-  otherText: {
-    color: Color.black,
+  text: {
     fontSize: Responsive.font(4),
+    marginBottom: Responsive.verticalScale(10),
   },
-  bottomView: {
-    flexDirection: "row",
-    paddingVertical: Responsive.verticalScale(8),
-    paddingHorizontal: Responsive.scale(5),
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  dateText: {
-    fontWeight: "400",
-    color: Color.black,
-    fontSize: Responsive.font(5),
+  backButton: {
+    position: 'absolute',
+    left: 16,
+    top: 0,
+    bottom: 0,
+    justifyContent: 'center',
+    width: 24,
+    height: 24,
   },
 });
+
+export default TDetailScreen;

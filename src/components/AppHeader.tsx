@@ -13,13 +13,16 @@ interface AppHeaderProps {
   isBackButton?: boolean;
   isAddButton?: boolean;
   titleText?: string;
+  leftIcon?: React.ReactNode;
   onPressBack?: TouchableOpacityProps["onPress"];
+  onPressAdd?: () => void;
 }
 
 const AppHeader: React.FC<AppHeaderProps> = (props) => {
-  const { titleText, onPressBack, isAddButton, isBackButton } = props;
+  const { titleText, onPressBack, isAddButton, isBackButton ,leftIcon,onPressAdd} = props;
   return (
     <View style={styles.mainView}>
+      
       {isBackButton ? (
         <TouchableOpacity style={styles.backTouch} onPress={onPressBack}>
           <Image source={Images.back} style={styles.backImg} />
@@ -28,13 +31,19 @@ const AppHeader: React.FC<AppHeaderProps> = (props) => {
         <View style={styles.backTouch} />
       )}
       <Text style={styles.titleText}>{titleText}</Text>
-      {isAddButton ? (
+      {isBackButton ? (
         <TouchableOpacity style={styles.backTouch}>
           <Image source={Images.add} style={styles.backImg} />
         </TouchableOpacity>
       ) : (
         <View style={styles.backTouch} />
       )}
+
+{isAddButton && onPressAdd && ( 
+                    <TouchableOpacity style={styles.backTouch} onPress={onPressAdd}>
+                      <Image source={Images.add} style={styles.backImg} />
+                    </TouchableOpacity>
+                  )}
     </View>
   );
 };
@@ -72,6 +81,6 @@ const styles = StyleSheet.create({
   backImg: {
     width: "80%",
     height: "80%",
-    tintColor: Color.black,
+    tintColor: Color.white,
   },
 });
