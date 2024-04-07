@@ -1,7 +1,7 @@
 
 # React-Lab3
 
-This Repository is LAB 3 of Adv Topics in Mobile Development from Nirali Pandya
+This Repository is LAB 4 of Adv Topics in Mobile Development from Nirali Pandya
 
 Financial App demonstrating React Navigation.
 
