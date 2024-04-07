@@ -1,4 +1,3 @@
 # INFO6132 - LAB 3
-This Repository is LAB 3 of Adv Topics in Mobile Development SEM3 Winter 2024 Program from Aashray Bavisa
+This Repository is Lab 4 of Adv Topics in Mobile Development SEM3 Winter 2024 Program from Nirali Pandya
 
-Financial App demonstrating React Navigation.
